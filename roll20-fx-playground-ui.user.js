@@ -253,7 +253,7 @@
                 "lifeSpanRandom": 5,
                 "speed": 7,
                 "speedRandom": 2,
-                "gravity": { "x": 0.01, "y": 0.65 },
+                "gravity": [0.01, 0.65], // { "x": 0.01, "y": 0.65 },
                 "angle": 270,
                 "angleRandom": 35,
                 "emissionRate": 1
@@ -359,7 +359,7 @@
                 "emissionRate": 3,
                 "speed": 7,
                 "speedRandom": 2,
-                "gravity": { "x": 0.01, "y": 0.5 },
+                "gravity": [0.01, 0.5], // { "x": 0.01, "y": 0.5 },
                 "angle": -1,
                 "angleRandom": 20,
                 "duration": 10
@@ -544,9 +544,14 @@
                     $numRandomInput.prop('disabled', true);
                 }
 
-                $row.append($('<div class="col-auto"><div class="form-control-plaintext">(&plusmn;</div></div>'));
-                $row.append($('<div class="col"></div>').append($numRandomInput));
-                $row.append($('<div class="col-auto"><div class="form-control-plaintext">)</div></div>'));
+                $row.append(
+                    $('<div class="col"></div>')
+                        .append(
+                            $('<div class="input-group"></div>')
+                                .append($('<div class="input-group-prepend"><div class="input-group-text">&plusmn;</div></div>'))
+                                .append($numRandomInput)
+                        )
+                );
 
                 // Angle can be disabled, but still have randomness applied
                 // fieldNames.push(fieldData.name + 'Random');
@@ -587,8 +592,15 @@
                 .addClass('form-control');
 
             $row.append($('<div class="col"></div>').append($colInput));
-            $row.append($('<div class="col"></div>').append($colOpacityInput));
-            $row.append($('<div class="col-auto"><div class="form-control-plaintext">%</div></div>'));
+            $row.append($('<div class="col-auto"><div class="form-control-plaintext">x</div></div>'));
+            $row.append(
+                $('<div class="col"></div>')
+                    .append(
+                        $('<div class="input-group"></div>')
+                            .append($colOpacityInput)
+                            .append($('<div class="input-group-append"><div class="input-group-text">%</div></div>'))
+                    )
+            );
 
             fieldNames.push(fieldData.name);
         } else {
@@ -671,8 +683,19 @@
             var $xInput = $('[name=' + fieldData.name +'X]');
             var $yInput = $('[name=' + fieldData.name +'Y]');
 
-            $xInput.val(obj.hasOwnProperty(fieldData.name+'X') ? obj[fieldData.name+'X'] : fieldData.defaultValue.x);
-            $yInput.val(obj.hasOwnProperty(fieldData.name+'Y') ? obj[fieldData.name+'Y'] : fieldData.defaultValue.y);
+            if (obj.hasOwnProperty(fieldData.name)) {
+                var fieldValues = obj[fieldData.name];
+                if (fieldData.name === 'gravity') {
+                    $xInput.val(fieldValues[0]);
+                    $yInput.val(fieldValues[1]);
+                } else {
+                    $xInput.val(fieldValues.x);
+                    $yInput.val(fieldValues.y);
+                }
+            } else {
+                $xInput.val(fieldData.defaultValue.x);
+                $yInput.val(fieldData.defaultValue.y);
+            }
         } else if (fieldData.type === 'colour') {
             var $colInput = $('[name=' + fieldData.name +']');
             var $colOpacityInput = $('[name=' + fieldData.name +'Opacity]');
