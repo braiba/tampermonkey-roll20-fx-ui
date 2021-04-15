@@ -2,7 +2,7 @@
 // @name         Roll20 FX Playground Tools
 // @namespace    https://wiki.roll20.net/
 // @version      0.1
-// @description  Improved UI for Roll20's FX PLayground
+// @description  Improved UI for Roll20's FX Playground
 // @author       Braiba
 // @match        https://wiki.roll20.net/fxplayground/
 // @grant        none
