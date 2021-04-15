@@ -695,6 +695,8 @@
         for (var field of fields) {
             loadFieldFromObject(field, obj);
         }
+
+        doRefreshPlus();
     }
 
     var copyFxDataToClipboard = function() {
@@ -803,7 +805,6 @@
 
         $('#controlsPlus button#loadButton').on('click', function() {
             loadFromObject(getBuiltInValues());
-            doRefreshPlus();
         });
 
         $('#controlsPlus button#importBtn').on('click', function() {
@@ -814,6 +815,7 @@
             copyFxDataToClipboard();
         });
     }
+
 
     init();
 
