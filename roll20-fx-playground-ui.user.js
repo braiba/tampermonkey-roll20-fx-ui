@@ -2,7 +2,7 @@
 // @name         Roll20 FX Playground Tools
 // @namespace    https://wiki.roll20.net/
 // @version      0.1
-// @description  Improved UI for Roll20's FX Playground
+// @description  Improved UI for Roll20's FX PLayground
 // @author       Braiba
 // @match        https://wiki.roll20.net/fxplayground/
 // @grant        none
@@ -107,6 +107,267 @@
         }
     ];
 
+
+    var builtInColours = [
+        {
+            "name": "Acid",
+            "values": {
+                "startColour": [0, 35, 10, 1],
+                "startColourRandom": [0, 10, 10, 0.25],
+                "endColour": [0, 75, 30, 0],
+                "endColourRandom": [0, 20, 20, 0]
+            }
+        },
+        {
+            "name": "Blood",
+            "values": {
+                "startColour": [175, 0, 0, 1],
+                "startColourRandom": [20, 0, 0, 0],
+                "endColour": [175, 0, 0, 0],
+                "endColourRandom": [20, 0, 0, 0]
+            }
+        },
+        {
+            "name": "Charm",
+            "values": {
+                "startColour": [200, 40, 150, 1],
+                "startColourRandom": [25, 5, 20, 0.25],
+                "endColour": [200, 40, 150, 0],
+                "endColourRandom": [50, 10, 40, 0]
+            }
+        },
+        {
+            "name": "Death",
+            "values": {
+                "startColour": [10, 0, 0, 1],
+                "startColourRandom": [5, 0, 0, 0.25],
+                "endColour": [20, 0, 0, 0],
+                "endColourRandom": [10, 0, 0, 0]
+            }
+        },
+        {
+            "name": "Fire",
+            "values": {
+                "startColour": [220, 35, 0, 1],
+                "startColourRandom": [62, 0, 0, 0.25],
+                "endColour": [220, 35, 0, 0],
+                "endColourRandom": [60, 60, 60, 0]
+            }
+        },
+        {
+            "name": "Frost",
+            "values": {
+                "startColour": [90, 90, 175, 1],
+                "startColourRandom": [0, 0, 0, 0.25],
+                "endColour": [125, 125, 255, 0],
+                "endColourRandom": [0, 0, 0, 0]
+            }
+        },
+        {
+            "name": "Holy",
+            "values": {
+                "startColour": [175, 130, 25, 1],
+                "startColourRandom": [20, 10, 0, 0.25],
+                "endColour": [175, 130, 50, 0],
+                "endColourRandom": [20, 20, 20, 0]
+            }
+        },
+        {
+            "name": "Magic",
+            "values": {
+                "startColour": [50, 50, 50, 0.5],
+                "startColourRandom": [150, 150, 150, 0.25],
+                "endColour": [128, 128, 128, 0],
+                "endColourRandom": [125, 125, 125, 0]
+            }
+        },
+        {
+            "name": "Slime",
+            "values": {
+                "startColour": [0, 250, 50, 1],
+                "startColourRandom": [0, 20, 10, 0.25],
+                "endColour": [0, 250, 50, 0],
+                "endColourRandom": [20, 20, 20, 0]
+            }
+        },
+        {
+            "name": "Smoke",
+            "values": {
+                "startColour": [150, 150, 150, 1],
+                "startColourRandom": [10, 10, 10, 0.5],
+                "endColour": [200, 200, 200, 0],
+                "endColourRandom": [10, 10, 10, 0]
+            }
+        },
+        {
+            "name": "Water",
+            "values": {
+                "startColour": [15, 15, 150, 1],
+                "startColourRandom": [5, 5, 25, 0.25],
+                "endColour": [10, 10, 100, 0],
+                "endColourRandom": [10, 10, 25, 0]
+            }
+        }
+    ];
+
+    var builtInEffects = [
+        {
+            "name": "Beam",
+            "values": {
+                "maxParticles": 3000,
+                "size": 15,
+                "sizeRandom": 0,
+                "lifeSpan": 15,
+                "lifeSpanRandom": 0,
+                "emissionRate": 50,
+                "speed": 30,
+                "speedRandom": 7,
+                "angle": -1,
+                "angleRandom": 1,
+                "duration": 25
+            }
+        },
+        {
+            "name": "Breath",
+            "values": {
+                "maxParticles": 750,
+                "size": 20,
+                "sizeRandom": 10,
+                "lifeSpan": 25,
+                "lifeSpanRandom": 2,
+                "emissionRate": 25,
+                "speed": 15,
+                "speedRandom": 3,
+                "angle": -1,
+                "angleRandom": 30,
+                "duration": 25
+            }
+        },
+        {
+            "name": "Bubbling",
+            "values": {
+                "maxParticles": 200,
+                "size": 15,
+                "sizeRandom": 3,
+                "lifeSpan": 20,
+                "lifeSpanRandom": 5,
+                "speed": 7,
+                "speedRandom": 2,
+                "gravity": { "x": 0.01, "y": 0.65 },
+                "angle": 270,
+                "angleRandom": 35,
+                "emissionRate": 1
+            }
+        },
+        {
+            "name": "Burn",
+            "values": {
+                "maxParticles": 100,
+                "size": 35,
+                "sizeRandom": 15,
+                "lifeSpan": 10,
+                "lifeSpanRandom": 3,
+                "speed": 3,
+                "angle": 0,
+                "emissionRate": 12
+            }
+        },
+        {
+            "name": "Burst",
+            "values": {
+                "maxParticles": 100,
+                "size": 35,
+                "sizeRandom": 15,
+                "lifeSpan": 10,
+                "lifeSpanRandom": 3,
+                "speed": 3,
+                "angle": 0,
+                "emissionRate": 12,
+                "onDeath": "explosion-magic" /* Not currently supported */
+            }
+        },
+        {
+            "name": "Explode",
+            "values": {
+                "maxParticles": 300,
+                "size": 35,
+                "sizeRandom": 10,
+                "duration": 25,
+                "lifeSpan": 20,
+                "lifeSpanRandom": 5,
+                "speed": 7,
+                "speedRandom": 1,
+                "angle": 0,
+                "angleRandom": 360,
+                "emissionRate": 300
+            }
+        },
+        {
+            "name": "Glow",
+            "values": {
+                "maxParticles": 500,
+                "size": 5,
+                "sizeRandom": 3,
+                "lifeSpan": 17,
+                "lifeSpanRandom": 5,
+                "emissionRate": 7,
+                "speed": 3,
+                "speedRandom": 2,
+                "angle": 270,
+                "angleRandom": 45
+            }
+        },
+        {
+            "name": "Missile",
+            "values": {
+                "maxParticles": 350,
+                "size": 7,
+                "sizeRandom": 3,
+                "lifeSpan": 7,
+                "lifeSpanRandom": 5,
+                "emissionRate": 50,
+                "speed": 7,
+                "speedRandom": 5,
+                "angle": 135,
+                "angleRandom": 0
+            }
+        },
+        {
+            "name": "Nova",
+            "values": {
+                "maxParticles": 500,
+                "size": 15,
+                "sizeRandom": 0,
+                "lifeSpan": 30,
+                "lifeSpanRandom": 0,
+                "emissionRate": 1000,
+                "speed": 7,
+                "speedRandom": 0,
+                "angle": 0,
+                "angleRandom": 180,
+                "duration": 5
+            }
+        },
+        {
+            "name": "Splatter",
+            "values": {
+                "maxParticles": 750,
+                "size": 7,
+                "sizeRandom": 3,
+                "lifeSpan": 20,
+                "lifeSpanRandom": 5,
+                "emissionRate": 3,
+                "speed": 7,
+                "speedRandom": 2,
+                "gravity": { "x": 0.01, "y": 0.5 },
+                "angle": -1,
+                "angleRandom": 20,
+                "duration": 10
+            }
+        },
+
+    ];
+
     var hexToRgb = function(hex) {
         hex = hex.replace(/^#/,'');
 
@@ -207,6 +468,34 @@
         $('#data').val(JSON.stringify(buildFxData()));
 
         $('#refresh').click();
+    }
+
+    var addBuiltInLoader = function($controlsPlus) {
+        var $row = $('<div class="form-row">');
+
+        var $colourSelect = $('<select></select>')
+            .attr('id', 'builtInColor')
+            .addClass('form-control');
+        for (var colourData of builtInColours) {
+            $colourSelect.append($('<option>' + colourData.name + '</option>'));
+        }
+
+        var $effectSelect = $('<select></select>')
+            .attr('id', 'builtInEffect')
+            .addClass('form-control');
+        for (var effectData of builtInEffects) {
+            $effectSelect.append($('<option>' + effectData.name + '</option>'));
+        }
+
+        var $loadBtn = $('<button type="button">Load Built-In</button>')
+            .attr('id', 'loadButton')
+            .addClass('btn btn-primary');
+
+        $row.append($('<div class="col"></div>').append($colourSelect));
+        $row.append($('<div class="col"></div>').append($effectSelect));
+        $row.append($('<div class="col-auto"></div>').append($loadBtn));
+
+        $controlsPlus.append($row);
     }
 
     var createFieldInput = function(fieldData, $row) {
@@ -336,6 +625,78 @@
         $form.append($row);
     }
 
+    var getBuiltInValues = function() {
+        var col = $('#builtInColor').val();
+        var colData = builtInColours.find(function (findColData) {
+            return (findColData.name === col);
+        });
+
+        var effect = $('#builtInEffect').val();
+        var effectData = builtInEffects.find(function (findEffectData) {
+            return (findEffectData.name === effect);
+        });
+
+        var values = {};
+
+        Object.assign(values, colData.values);
+        Object.assign(values, effectData.values);
+
+        return values;
+    }
+
+    var loadFieldFromObject = function(fieldData, obj) {
+        var isEnabled = true;
+        var fieldNames = [];
+
+        if (fieldData.type === 'number') {
+            var $numInput = $('[name=' + fieldData.name +']');
+
+            var initialValue = obj.hasOwnProperty(fieldData.name) ? obj[fieldData.name] : fieldData.defaultValue;
+
+            if (initialValue === -1) {
+                initialValue = 0;
+                isEnabled = false;
+            }
+
+            $numInput.val(initialValue);
+            $numInput.prop('disabled', !isEnabled);
+
+            if (fieldData.hasOwnProperty('defaultRandom')) {
+                var $numRandomInput = $('[name=' + fieldData.name +'Random]');
+
+                $numRandomInput.val(obj.hasOwnProperty(fieldData.name + 'Random') ? obj[fieldData.name + 'Random'] : fieldData.defaultRandom);
+            }
+
+        } else if (fieldData.type === 'point') {
+            var $xInput = $('[name=' + fieldData.name +'X]');
+            var $yInput = $('[name=' + fieldData.name +'Y]');
+
+            $xInput.val(obj.hasOwnProperty(fieldData.name+'X') ? obj[fieldData.name+'X'] : fieldData.defaultValue.x);
+            $yInput.val(obj.hasOwnProperty(fieldData.name+'Y') ? obj[fieldData.name+'Y'] : fieldData.defaultValue.y);
+        } else if (fieldData.type === 'colour') {
+            var $colInput = $('[name=' + fieldData.name +']');
+            var $colOpacityInput = $('[name=' + fieldData.name +'Opacity]');
+
+            var colValue = (obj.hasOwnProperty(fieldData.name) ? obj[fieldData.name] : fieldData.defaultValue);
+            $colInput.val(rgbaToHex(colValue, true));
+            $colOpacityInput.val(colValue[3] * 100);
+        } else {
+            console.error('Unexpected field type: ' + fieldData.type);
+        }
+
+        if (fieldData.hasOwnProperty('isOptional') && fieldData.isOptional) {
+            var $enabledCheckbox = $('[name=' + fieldData.name +'Enabled]');
+
+            $enabledCheckbox.prop('checked', isEnabled);
+        }
+    }
+
+    var loadFromObject = function(obj) {
+        for (var field of fields) {
+            loadFieldFromObject(field, obj);
+        }
+    }
+
     var copyFxDataToClipboard = function() {
         navigator.permissions.query({name: "clipboard-write"}).then(result => {
             if (result.state == "granted" || result.state == "prompt") {
@@ -344,6 +705,25 @@
                         window.alert('The FX data has been copied to the clipboard');
                     }, function() {
                         window.alert('Could not copy to clipboard');
+                    });
+            }
+        });
+    }
+
+    var loadFxDataFromClipboard = function() {
+        navigator.permissions.query({name: "clipboard-read"}).then(result => {
+            if (result.state == "granted" || result.state == "prompt") {
+                navigator.clipboard.readText()
+                    .then(function(rawText) {
+                        try {
+                            var json = JSON.parse(rawText);
+                            loadFromObject(json);
+                        } catch (e) {
+                            console.error(e);
+                            window.alert('The contents of the clipboard does not appear to be FX data');
+                        }
+                    }, function() {
+                        window.alert('Could not read from clipboard');
                     });
             }
         });
@@ -380,15 +760,33 @@
         $(document.head).append($('<style type="text/css">' + css + '</style>'));
         $(document.head).append($('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">'));
 
-        var controlsPlus = $('<form id="controlsPlus"></div>');
+        var $controlsPlus = $('<form id="controlsPlus"></div>');
+
+        addBuiltInLoader($controlsPlus);
+
+        $controlsPlus.append($('<hr />'));
 
         for (var field of fields) {
-            addFieldToForm(controlsPlus, field);
+            addFieldToForm($controlsPlus, field);
         }
 
-        controlsPlus.append($('<div><button type="button" class="btn btn-primary">Copy FX Data</button></div>'));
+        var importExportHtml = `
+<div class="form-row">
+    <div class="col">
+        <button type="button" id="importBtn" class="btn btn-block btn-primary">Import from Clipboard</button>
+    </div>
 
-        $(document.body).append(controlsPlus);
+    <div class="col-auto">
+        <div class="form-control-plaintext">|</div>
+    </div>
+
+    <div class="col">
+        <button type="button" id="exportBtn" class="btn btn-block btn-primary">Export to Clipboard</button>
+    </div>
+`;
+        $controlsPlus.append($(importExportHtml));
+
+        $(document.body).append($controlsPlus);
 
         $('#controlsPlus input[type=checkbox]').on('change', function() {
             var $checkbox = $(this);
@@ -403,11 +801,19 @@
             doRefreshPlus();
         });
 
-        $('#controlsPlus button').on('click', function() {
+        $('#controlsPlus button#loadButton').on('click', function() {
+            loadFromObject(getBuiltInValues());
+            doRefreshPlus();
+        });
+
+        $('#controlsPlus button#importBtn').on('click', function() {
+            loadFxDataFromClipboard();
+        });
+
+        $('#controlsPlus button#exportBtn').on('click', function() {
             copyFxDataToClipboard();
         });
     }
-
 
     init();
 
