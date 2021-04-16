@@ -95,8 +95,13 @@
             "name": "startColour",
             "label": "Start Colour",
             "type": "colour",
-            "defaultValue": [250, 218, 68, 1],
-            "defaultRandom": [62, 60, 60, 0]
+            "defaultValue": [250, 218, 68, 1]
+        },
+        {
+            "name": "startColourRandom",
+            "label": "Start Colour Random",
+            "type": "colour-random",
+            "defaultValue": [62, 60, 60, 0]
         },
         {
             "name": "endColour",
@@ -104,6 +109,12 @@
             "type": "colour",
             "defaultValue": [245, 35, 0, 0],
             "defaultRandom": [60, 60, 60, 0]
+        },
+        {
+            "name": "endColourRandom",
+            "label": "End Colour Random",
+            "type": "colour-random",
+            "defaultValue": [60, 60, 60, 0]
         }
     ];
 
@@ -431,6 +442,27 @@
             if (JSON.stringify(colValue) !== JSON.stringify(fieldData.defaultValue)) {
                 fxData[fieldData.name] = colValue;
             }
+        } else if (fieldData.type === 'colour-random') {
+            var parts = ['R', 'G', 'B', 'A'];
+            var partValues = [];
+
+            for (var i in parts) {
+                if (parts.hasOwnProperty(i)) {
+                    var part = parts[i];
+
+                    var partValue = parseFloat(formData[fieldData.name + part]);
+
+                    if (partValue === NaN) {
+                        partValue = fieldData.dataValue[i];
+                    }
+
+                    partValues.push(partValue);
+                }
+            }
+
+            if (JSON.stringify(partValues) !== JSON.stringify(fieldData.defaultValue)) {
+                fxData[fieldData.name] = partValues;
+            }
         } else {
             console.error('Unexpected field type: ' + fieldData.type);
         }
@@ -603,6 +635,27 @@
             );
 
             fieldNames.push(fieldData.name);
+        } else if (fieldData.type === 'colour-random') {
+            var parts = ['R', 'G', 'B', 'A'];
+
+            for (var i in parts) {
+                if (parts.hasOwnProperty(i)) {
+                    var part = parts[i];
+
+                    var $partInput = $('<input />')
+                        .attr('type', 'number')
+                        .attr('name', fieldData.name + part)
+                        .attr('min', 0)
+                        .attr('max', 255)
+                        .val(initialValue[i])
+                        .addClass('form-control')
+                        .addClass('colour-part-' + part.toLowerCase());
+
+                    $row.append($('<div class="col"></div>').append($partInput));
+                }
+
+                fieldNames.push(fieldData.name + part);
+            }
         } else {
             console.error('Unexpected field type: ' + fieldData.type);
         }
@@ -703,6 +756,22 @@
             var colValue = (obj.hasOwnProperty(fieldData.name) ? obj[fieldData.name] : fieldData.defaultValue);
             $colInput.val(rgbaToHex(colValue, true));
             $colOpacityInput.val(colValue[3] * 100);
+        } else if (fieldData.type === 'colour-random') {
+            var parts = ['R', 'G', 'B', 'A'];
+
+            for (var i in parts) {
+                if (parts.hasOwnProperty(i)) {
+                    var part = parts[i];
+
+                    var $partInput = $('[name=' + fieldData.name + part +']');
+
+                    if (obj.hasOwnProperty(fieldData.name + part)) {
+                        $partInput.val(fieldData.defaultValue[fieldData.name + part]);
+                    } else {
+                        $partInput.val(fieldData.defaultValue[i]);
+                    }
+                }
+            }
         } else {
             console.error('Unexpected field type: ' + fieldData.type);
         }
@@ -771,6 +840,10 @@
     background-color: rgba(255,255,255,0.5);
 }
 
+#controlsPlus .form-control {
+    padding: .125rem .5rem;
+}
+
 #controlsPlus .form-check {
     display: flex;
     align-items: center;
@@ -779,6 +852,21 @@
 
 #controlsPlus .form-check-input {
     margin-top: 0;
+}
+
+#controlsPlus .colour-part-r {
+    border-color: #F00;
+    background-color: #FBB;
+}
+
+#controlsPlus .colour-part-g {
+    border-color: #0F0;
+    background-color: #BFB;
+}
+
+#controlsPlus .colour-part-b {
+    border-color: #00F;
+    background-color: #BBF;
 }
 
 `;
