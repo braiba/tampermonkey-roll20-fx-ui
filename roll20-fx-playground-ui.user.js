@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Roll20 FX Playground Tools
 // @namespace    https://wiki.roll20.net/
-// @version      0.1
+// @version      0.2
 // @description  Improved UI for Roll20's FX Playground
 // @author       Braiba
 // @match        https://wiki.roll20.net/fxplayground/
@@ -545,6 +545,7 @@
                 .attr('type', 'number')
                 .attr('name', fieldData.name)
                 .attr('min', 0)
+                .attr('step', 'any')
                 .val(initialValue)
                 .addClass('form-control');
 
@@ -565,6 +566,7 @@
                     .attr('type', 'number')
                     .attr('name', fieldData.name + 'Random')
                     .attr('min', (fieldData.hasOwnProperty('min') ? fieldData.min : 0))
+                    .attr('step', 'any')
                     .val(fieldData.defaultRandom)
                     .addClass('form-control');
 
@@ -620,6 +622,7 @@
                 .attr('type', 'number')
                 .attr('min', 0)
                 .attr('max', 100)
+                .attr('step', 'any')
                 .val(fieldData.defaultValue[3] * 100)
                 .addClass('form-control');
 
@@ -646,7 +649,8 @@
                         .attr('type', 'number')
                         .attr('name', fieldData.name + part)
                         .attr('min', 0)
-                        .attr('max', 255)
+                        .attr('max', (part === 'A' ? 1 : 255))
+                        .attr('step', 'any')
                         .val(initialValue[i])
                         .addClass('form-control')
                         .addClass('colour-part-' + part.toLowerCase());
@@ -731,19 +735,19 @@
 
                 $numRandomInput.val(obj.hasOwnProperty(fieldData.name + 'Random') ? obj[fieldData.name + 'Random'] : fieldData.defaultRandom);
             }
-
         } else if (fieldData.type === 'point') {
             var $xInput = $('[name=' + fieldData.name +'X]');
             var $yInput = $('[name=' + fieldData.name +'Y]');
 
             if (obj.hasOwnProperty(fieldData.name)) {
                 var fieldValues = obj[fieldData.name];
-                if (fieldData.name === 'gravity') {
-                    $xInput.val(fieldValues[0]);
-                    $yInput.val(fieldValues[1]);
-                } else {
+                if (fieldValues.hasOwnProperty('x')) {
+                    // The FX needs gravity to be an array, but the documentation and examples format it as an object with x and y keys
                     $xInput.val(fieldValues.x);
                     $yInput.val(fieldValues.y);
+                } else {
+                    $xInput.val(fieldValues[0]);
+                    $yInput.val(fieldValues[1]);
                 }
             } else {
                 $xInput.val(fieldData.defaultValue.x);
@@ -765,8 +769,8 @@
 
                     var $partInput = $('[name=' + fieldData.name + part +']');
 
-                    if (obj.hasOwnProperty(fieldData.name + part)) {
-                        $partInput.val(fieldData.defaultValue[fieldData.name + part]);
+                    if (obj.hasOwnProperty(fieldData.name)) {
+                        $partInput.val(obj[fieldData.name][i]);
                     } else {
                         $partInput.val(fieldData.defaultValue[i]);
                     }
