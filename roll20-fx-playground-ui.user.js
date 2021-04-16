@@ -264,7 +264,7 @@
                 "lifeSpanRandom": 5,
                 "speed": 7,
                 "speedRandom": 2,
-                "gravity": [0.01, 0.65], // { "x": 0.01, "y": 0.65 },
+                "gravity": { "x": 0.01, "y": 0.65 },
                 "angle": 270,
                 "angleRandom": 35,
                 "emissionRate": 1
@@ -370,7 +370,7 @@
                 "emissionRate": 3,
                 "speed": 7,
                 "speedRandom": 2,
-                "gravity": [0.01, 0.5], // { "x": 0.01, "y": 0.5 },
+                "gravity": { "x": 0.01, "y": 0.5 },
                 "angle": -1,
                 "angleRandom": 20,
                 "duration": 10
@@ -488,16 +488,20 @@
             if (fxData.gravity.y === 0) {
                 fxData.gravity.y = 0.001;
             }
-
-            // Gravity has an explicit override on the format in the code (legacy?)
-            fxData.gravity = [fxData.gravity.x, fxData.gravity.y];
         }
 
         return fxData;
     }
 
     var doRefreshPlus = function() {
-        $('#data').val(JSON.stringify(buildFxData()));
+        var fxData = buildFxData();
+
+        if (fxData.hasOwnProperty('gravity')) {
+            // Gravity has an explicit override on the format in the playground code for some reason
+            fxData.gravity = [fxData.gravity.x, fxData.gravity.y];
+        }
+
+        $('#data').val(JSON.stringify(fxData));
 
         $('#refresh').click();
     }
@@ -536,25 +540,15 @@
         var fieldNames = [];
 
         if (fieldData.type === 'number') {
-            if (initialValue === -1) {
-                initialValue = 0;
-                isEnabled = false;
-            }
-
             var $numInput = $('<input />')
                 .attr('type', 'number')
                 .attr('name', fieldData.name)
                 .attr('min', 0)
                 .attr('step', 'any')
-                .val(initialValue)
                 .addClass('form-control');
 
             if (fieldData.hasOwnProperty('max')) {
                 $numInput.attr('max', fieldData.max);
-            }
-
-            if (!isEnabled) {
-                $numInput.prop('disabled', true);
             }
 
             $row.append($('<div class="col"></div>').append($numInput));
@@ -567,15 +561,10 @@
                     .attr('name', fieldData.name + 'Random')
                     .attr('min', (fieldData.hasOwnProperty('min') ? fieldData.min : 0))
                     .attr('step', 'any')
-                    .val(fieldData.defaultRandom)
                     .addClass('form-control');
 
                 if (fieldData.hasOwnProperty('max')) {
                     $numRandomInput.attr('max', fieldData.max);
-                }
-
-                if (!isEnabled) {
-                    $numRandomInput.prop('disabled', true);
                 }
 
                 $row.append(
@@ -595,13 +584,11 @@
             var $xInput = $('<input />')
                 .attr('type', 'number')
                 .attr('name', fieldData.name + 'X')
-                .val(initialValue.x)
                 .addClass('form-control');
 
             var $yInput = $('<input />')
                 .attr('type', 'number')
                 .attr('name', fieldData.name + 'Y')
-                .val(initialValue.y)
                 .addClass('form-control');
 
             $row.append($('<div class="col"></div>').append($xInput));
@@ -614,7 +601,6 @@
             var $colInput = $('<input />')
                 .attr('name', fieldData.name)
                 .attr('type', 'color')
-                .val(rgbaToHex(fieldData.defaultValue, true))
                 .addClass('form-control');
 
             var $colOpacityInput = $('<input />')
@@ -623,7 +609,6 @@
                 .attr('min', 0)
                 .attr('max', 100)
                 .attr('step', 'any')
-                .val(fieldData.defaultValue[3] * 100)
                 .addClass('form-control');
 
             $row.append($('<div class="col"></div>').append($colInput));
@@ -651,7 +636,6 @@
                         .attr('min', 0)
                         .attr('max', (part === 'A' ? 1 : 255))
                         .attr('step', 'any')
-                        .val(initialValue[i])
                         .addClass('form-control')
                         .addClass('colour-part-' + part.toLowerCase());
 
@@ -742,7 +726,7 @@
             if (obj.hasOwnProperty(fieldData.name)) {
                 var fieldValues = obj[fieldData.name];
                 if (fieldValues.hasOwnProperty('x')) {
-                    // The FX needs gravity to be an array, but the documentation and examples format it as an object with x and y keys
+                    // The FX playground expects the gravity property in the form of an array, but actual Roll20 needs it as an object with x and y keys, so support both on import
                     $xInput.val(fieldValues.x);
                     $yInput.val(fieldValues.y);
                 } else {
@@ -769,11 +753,17 @@
 
                     var $partInput = $('[name=' + fieldData.name + part +']');
 
+                    var partValue = fieldData.defaultValue[i];
                     if (obj.hasOwnProperty(fieldData.name)) {
-                        $partInput.val(obj[fieldData.name][i]);
-                    } else {
-                        $partInput.val(fieldData.defaultValue[i]);
+                        partValue = obj[fieldData.name][i];
                     }
+
+                    if (part === 'A') {
+                        // Display as percentage, to match opacity input
+                        partValue *= 100;
+                    }
+
+                    $partInput.val(partValue);
                 }
             }
         } else {
@@ -846,6 +836,13 @@
 
 #controlsPlus .form-control {
     padding: .125rem .5rem;
+}
+
+#controlsPlus .form-control:disabled,
+#controlsPlus .form-control[readonly] {
+    background-color: transparent;
+    border-color: #495057;
+    color: #495057;
 }
 
 #controlsPlus .form-check {
@@ -931,8 +928,7 @@
         });
     }
 
-
     init();
 
-    doRefreshPlus();
+    loadFromObject({});
 })();
